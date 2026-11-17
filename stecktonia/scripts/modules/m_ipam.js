@@ -1,0 +1,39 @@
+// ===== m_ipam (v105): учёт адресов (IPAM) — использование подсетей, свободные адреса, поиск конфликтов адресации =====
+function ipmRows(){const R=[];for(const d of (S.devs||[]))for(const f of Array.from(d.ifaces||[])){if(!f||!f.ip||!f.mask)continue;const a=ip2n(f.ip),m=ip2n(f.mask);if(a==null||m==null)continue;const l=plen(f.mask),mk=l?((0xFFFFFFFF<<(32-l))>>>0):0,net=(a&mk)>>>0;R.push({d,f,ip:a>>>0,l,net,bc:((net|(~mk>>>0))>>>0)})}return R}
+const ipmCap=l=>l>=32?1:l===31?2:Math.pow(2,32-l)-2;
+function ipmProblems(){const R=ipmRows(),P=[],by={};
+ R.forEach(r=>{(by[r.ip]=by[r.ip]||[]).push(r);if(r.l<31&&r.ip===r.net)P.push({k:'net',t:`${r.d.name} ${r.f.n}: адрес ${n2ip(r.ip)} – это адрес сети ${n2ip(r.net)}/${r.l}, хосту его назначать нельзя`,devs:[r.d.name]});
+  else if(r.l<31&&r.ip===r.bc)P.push({k:'bc',t:`${r.d.name} ${r.f.n}: адрес ${n2ip(r.ip)} – широковещательный для ${n2ip(r.net)}/${r.l}`,devs:[r.d.name]})});
+ Object.keys(by).forEach(k=>{if(by[k].length>1)P.push({k:'dup',t:`Дубликат адреса ${n2ip(+k)}: ${by[k].map(r=>r.d.name+' '+r.f.n).join(', ')}`,devs:by[k].map(r=>r.d.name)})});
+ const OV={};for(let i=0;i<R.length;i++)for(let j=i+1;j<R.length;j++){const a=R[i],b=R[j];if(a.d===b.d||a.l===b.l)continue;const s=a.l<b.l?a:b,t=a.l<b.l?b:a;if(t.net>=s.net&&t.net<=s.bc){const k=s.net+'/'+s.l+'|'+t.net+'/'+t.l,o=OV[k]=OV[k]||{s,t,w:new Set(),n:new Set()};o.w.add(s.d.name+' '+s.f.n);o.n.add(t.d.name+' '+t.f.n);o.dv=o.dv||new Set();o.dv.add(s.d.name);o.dv.add(t.d.name)}}
+ Object.values(OV).forEach(o=>P.push({k:'ovl',t:`Пересечение подсетей ${n2ip(o.s.net)}/${o.s.l} (${[...o.w].join(', ')}) и ${n2ip(o.t.net)}/${o.t.l} (${[...o.n].join(', ')}): разные маски в одной сети`,devs:[...o.dv]}))
+ for(const d of (S.devs||[]))if(d.t==='pc'&&d.gw&&ip2n(d.gw)!=null){const r=R.find(x=>x.d===d);if(r&&!(ip2n(d.gw)>>>0>=r.net&&ip2n(d.gw)>>>0<=r.bc))P.push({k:'gw',t:`${d.name}: шлюз ${d.gw} вне подсети ${n2ip(r.net)}/${r.l}`,devs:[d.name]})}
+ return P}
+function ipmSummary(io){const R=ipmRows();if(!R.length)return io('Адресов на схеме пока нет.');const G={};R.forEach(r=>{const k=r.net+'/'+r.l;(G[k]=G[k]||{net:r.net,l:r.l,ips:new Set(),n:[]}).ips.add(r.ip);G[k].n.push(r.d.name)});
+ io('Подсеть            Занято / ёмкость   Загрузка  Узлы');
+ Object.values(G).sort((a,b)=>a.net-b.net||a.l-b.l).forEach(g=>{const u=g.ips.size,c=ipmCap(g.l);io(`${(n2ip(g.net)+'/'+g.l).padEnd(18)} ${(u+' / '+c).padEnd(18)} ${(Math.round(u/c*100)+'%').padEnd(9)} ${[...new Set(g.n)].join(', ')}`)});
+ const P=ipmProblems();io(P.length?`Проблем адресации: ${P.length}. Подробнее: ipam check`:'Проблем адресации не найдено.')}
+function ipmNet(s,io){const m=/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\/(\d{1,2})$/.exec(s||'');if(!m||ip2n(m[1])==null||+m[2]>32)return io('Использование: ipam [<сеть>/<N>] · ipam check');
+ const l=+m[2],mk=l?((0xFFFFFFFF<<(32-l))>>>0):0,net=(ip2n(m[1])&mk)>>>0,bc=(net|(~mk>>>0))>>>0,R=ipmRows().filter(r=>r.ip>=net&&r.ip<=bc).sort((a,b)=>a.ip-b.ip),cap=ipmCap(l);
+ io(`Сеть ${n2ip(net)}/${l}: ёмкость ${cap} хостов`);if(!R.length)io('  Адресов на схеме нет – вся сеть свободна.');R.forEach(r=>io(`  ${n2ip(r.ip).padEnd(16)} ${r.d.name} ${r.f.n}`));
+ const used=new Set(R.map(r=>r.ip)),lo=l<31?net+1:net,hi=l<31?bc-1:bc,free=[];let st=null;for(let a=lo;a<=hi&&free.length<5;a++){if(used.has(a)){if(st!==null){free.push([st,a-1]);st=null}}else if(st===null)st=a}if(st!==null&&free.length<5)free.push([st,hi]);
+ const nu=[...used].filter(a=>a>=lo&&a<=hi).length;io(`Занято: ${nu}, свободно: ${cap-nu}`+(free.length?'; первые свободные: '+free.map(f=>f[0]===f[1]?n2ip(f[0]):n2ip(f[0])+'–'+n2ip(f[1])).join(', '):''));
+ const P=ipmProblems().filter(p=>p.devs.some(n=>R.some(r=>r.d.name===n)));if(P.length){io('Проблемы в этой сети:');P.forEach(p=>io('  ✖ '+p.t))}}
+{const _r=run;run=function(c){const a=String(c||'').trim().split(/\s+/);if((a[0]||'').toLowerCase()==='ipam'){const s=a[1];
+  if(!s)return ipmSummary(p);if(s.toLowerCase()==='check'){const P=ipmProblems();if(!P.length)return p('Проблем адресации не найдено: дубликатов, пересечений, адресов сети и широковещательных, шлюзов вне подсети нет.');p('Найдено проблем: '+P.length);return P.forEach(x=>p('  ✖ '+x.t))}
+  return ipmNet(s,p)}return _r(c)}}
+CMDS.push(['ipam · ipam <сеть>/<N> · ipam check','Учёт адресов: загрузка подсетей, свободные адреса, поиск дубликатов, пересечений и шлюзов вне подсети','Учёт адресов (IPAM)','ipam без параметров показывает все подсети схемы с загрузкой; ipam 192.168.10.0/24 – занятые и свободные адреса сети; ipam check – конфликты: дубликаты адресов, адрес сети или широковещательный на узле, пересечение подсетей с разными масками, шлюз вне подсети ПК.']);
+const ipmScn=()=>({dev:[['pc','PC-A',60,100],['pc','PC-B',60,230],['pc','PC-C',60,360],['sw','SW1',260,230],['rt','R1',460,230]],link:[['PC-A',0,'SW1',0],['PC-B',0,'SW1',1],['PC-C',0,'SW1',2],['R1',0,'SW1',3]],
+ cfg:[['R1','ip gi0/0 192.168.10.1 /24'],['PC-A','ip eth0 192.168.10.10 /24','gateway 192.168.10.1'],['PC-B','ip eth0 192.168.10.10 /24','gateway 192.168.1.1'],['PC-C','ip eth0 192.168.10.30 /25','gateway 192.168.10.1']]});
+TPL.push(Object.assign({n:'IPAM: найти конфликты адресации',d:'Офисная сеть на коммутаторе SW1 с шлюзом R1. В адресации три ошибки: дубликат адреса, разные маски в одной сети и шлюз вне подсети. Найдите их командой ipam check.',hint:'Выполните ipam и ipam check, затем ipam 192.168.10.0/24, чтобы увидеть свободные адреса. Исправьте адреса, маску и шлюз и повторите ipam check, затем проверьте ping между компьютерами.'},ipmScn()));
+if(typeof EXNET!=='undefined')EXNET.push({n:'IPAM: устранить конфликты адресации',min:15,tag:'Адресация',init:r=>({}),start:c=>{tplLoad(Object.assign({n:'IPAM',hint:''},ipmScn()));p('В схеме есть ошибки адресации. Найдите и исправьте их.')},
+ text:c=>'В сети 192.168.10.0/24 (шлюз R1 – 192.168.10.1) компьютеры PC-A, PC-B, PC-C получили ошибочные настройки. Найдите ошибки командой ipam check и исправьте: у каждого узла должен быть уникальный адрес из этой сети с одинаковой маской, шлюз – адрес R1. После исправления PC-A и PC-B должны пинговать PC-C.',
+ crit:c=>{const has=k=>ipmProblems().some(p=>p.k===k),pcs=['PC-A','PC-B','PC-C'].map(byNm),clean=()=>ipmProblems().length===0&&pcs.every(d=>d.ifaces[0].ip);
+  return[['Нет дубликатов адресов',20,()=>pcs.every(d=>d.ifaces[0].ip)&&!has('dup')],['Маски согласованы: нет пересечения подсетей',20,()=>pcs.every(d=>d.ifaces[0].ip)&&!has('ovl')],
+  ['Шлюз каждого ПК – 192.168.10.1',20,()=>pcs.every(d=>d.gw==='192.168.10.1')],
+  ['PC-A → PC-C (адресация без ошибок)',20,()=>clean()&&(computeRip(),EX=[],!!trip(pcs[0],pcs[2].ifaces[0].ip).ok)],
+  ['PC-B → PC-C (адресация без ошибок)',20,()=>clean()&&(computeRip(),EX=[],!!trip(pcs[1],pcs[2].ifaces[0].ip).ok)]]}});
+MAN.push(['Т73. Учёт адресов (IPAM) и типовые ошибки адресации',`<p><b>Зачем.</b> В реальной сети адреса учитывают в таблице (IPAM): какая подсеть, кто занял, что свободно. Большинство «необъяснимых» отказов – ошибки адресации.</p>
+<p><b>Типичные конфликты.</b> <i>Дубликат</i> – один адрес у двух узлов (связь пропадает «плавающим» образом). <i>Адрес сети или широковещательный</i>, назначенный хосту. <i>Разные маски</i> в одной сети: узлы по-разному считают, что «свой», а что «чужой», и часть трафика уходит на шлюз или теряется. <i>Шлюз вне подсети</i> компьютера – выход в другие сети невозможен.</p>
+<p><b>Команды Стектонии.</b> <code>ipam</code> – подсети схемы с загрузкой; <code>ipam 192.168.10.0/24</code> – занятые и свободные адреса, первые свободные диапазоны; <code>ipam check</code> – список конфликтов. Есть шаблон «IPAM: найти конфликты адресации» и экзаменационное задание «IPAM: устранить конфликты адресации».</p>
+<p><b>Ограничения.</b> Учитывается IPv4 и адреса интерфейсов схемы; пересечение определяется по сетям разных длин на разных устройствах, а принадлежность узлов одному коммутатору не анализируется.</p>`]);

@@ -1,0 +1,36 @@
+// ===== m_vlanx (v109): аудит VLAN — таблица портов, несовпадение режимов портов на стыках, узлы одной подсети в разных VLAN, шлюз в другой VLAN =====
+const vxMgd=d=>!!d&&((d.t==='sw'&&d.k==='msw')||d.k==='l3');
+const vxPort=(d,i)=>vxMgd(d)&&!!d.ifaces[i]&&(d.k!=='l3'||!!d.ifaces[i].sp);
+const vxV=f=>(f&&f.v)||1;
+function vxInfo(){const P=[],hv={},gw={},L=(S.links||[]);
+ for(const l of L){const da=dv(l.a),db=dv(l.b);if(!da||!db||!da.ifaces[l.ai]||!db.ifaces[l.bi])continue;const pa=vxPort(da,l.ai),pb=vxPort(db,l.bi),fa=da.ifaces[l.ai],fb=db.ifaces[l.bi];
+  if(pa&&pb){if(!!fa.tr!==!!fb.tr)P.push({k:'trunkmis',t:`Стык ${da.name} ${fa.n} ↔ ${db.name} ${fb.n}: с одной стороны trunk, с другой access (VLAN ${fa.tr?vxV(fb):vxV(fa)}) – проходит только одна VLAN, остальные теряются`});
+   else if(!fa.tr&&vxV(fa)!==vxV(fb))P.push({k:'vlanmis',t:`Стык ${da.name} ${fa.n} (access VLAN ${vxV(fa)}) ↔ ${db.name} ${fb.n} (access VLAN ${vxV(fb)}): VLAN на концах канала не совпадают`})}
+  else if(pa!==pb){const sw=pa?da:db,sf=pa?fa:fb,e=pa?db:da,ef=pa?fb:fa;
+   if(e.t==='pc'){if(sf.tr)P.push({k:'trunkhost',t:`${sw.name} ${sf.n}: порт trunk, а подключён конечный узел ${e.name}`});else hv[e.id]={v:vxV(sf),sw,port:sf}}
+   if(e.t==='rt'&&e.k!=='l3'&&!sf.tr)gw[e.id+':'+ef.n]={v:vxV(sf),ip:ef.ip}}}
+ const svi={};for(const d of (S.devs||[]))if(d.k==='l3')d.ifaces.forEach(f=>{if(f.svi&&f.ip)svi[f.ip]={v:f.svi,d,n:f.n}});
+ const hosts=Object.keys(hv).map(id=>dv(id)).filter(d=>d&&d.ifaces[0]&&d.ifaces[0].ip&&d.ifaces[0].mask&&ip2n(d.ifaces[0].ip)!=null&&ip2n(d.ifaces[0].mask)!=null),G={};
+ hosts.forEach(d=>{const f=d.ifaces[0],l=plen(f.mask),mk=l?((0xFFFFFFFF<<(32-l))>>>0):0,net=((ip2n(f.ip)&mk)>>>0)+'/'+l;(G[net]=G[net]||[]).push(d)});
+ Object.keys(G).forEach(net=>{const vs=[...new Set(G[net].map(d=>hv[d.id].v))];if(vs.length>1){const [n,l]=net.split('/');P.push({k:'subvlan',t:`Подсеть ${n2ip(+n)}/${l}: узлы в разных VLAN – ${G[net].map(d=>d.name+' (VLAN '+hv[d.id].v+')').join(', ')}; в разных VLAN узлы одной подсети не видят друг друга`})}});
+ hosts.forEach(d=>{if(!d.gw)return;const h=hv[d.id],s=svi[d.gw];if(s&&s.v!==h.v)P.push({k:'gwvlan',t:`${d.name} (VLAN ${h.v}): шлюз ${d.gw} – это ${s.d.name} ${s.n} (VLAN ${s.v}), в своей VLAN шлюза нет`});
+  else if(!s){for(const key in gw)if(gw[key].ip===d.gw&&gw[key].v!==h.v)P.push({k:'gwvlan',t:`${d.name} (VLAN ${h.v}): шлюз ${d.gw} подключён к порту VLAN ${gw[key].v}`})}});
+ return{P,hv}}
+function vxShow(io){const R=[];for(const d of (S.devs||[]))if(vxMgd(d))d.ifaces.forEach((f,i)=>{if(!vxPort(d,i))return;const q=(typeof peers==='function'?peers(d,i):[])[0]||null,l=(S.links||[]).find(l=>(l.a===d.id&&l.ai===i)||(l.b===d.id&&l.bi===i)),o=l?dv(l.a===d.id?l.b:l.a):null,oi=l?(l.a===d.id?l.bi:l.ai):0;R.push(`${d.name.padEnd(8)} ${f.n.padEnd(8)} ${(f.tr?'trunk':'access '+vxV(f)).padEnd(11)} ${f.off?'выключен':o?(o.name+(o.ifaces[oi]?' '+o.ifaces[oi].n:'')):'—'}`)});
+ if(!R.length)return io('На схеме нет управляемых коммутаторов (VLAN настраиваются только на управляемых и L3-коммутаторах).');io('Коммутатор Порт     Режим       Подключено');R.forEach(r=>io(r));const I=vxInfo();io(I.P.length?`Проблем VLAN: ${I.P.length}. Подробнее: vlan check`:'Проблем VLAN не найдено.')}
+function vxCheck(io){const I=vxInfo();if(!I.P.length)return io('Проблем VLAN не найдено: режимы портов на стыках согласованы, узлы одной подсети в одной VLAN, шлюзы в своих VLAN.');io('Найдено проблем VLAN: '+I.P.length);I.P.forEach(x=>io('  ✖ '+x.t))}
+{const _r=run;run=function(c){const a=String(c||'').trim().split(/\s+/),w=a.map(x=>x.toLowerCase());if(w[0]==='vlan'&&(w[1]==='show'||w[1]==='check')&&a.length===2)return w[1]==='show'?vxShow(p):vxCheck(p);return _r(c)}}
+CMDS.push(['vlan show · vlan check','Аудит VLAN: режимы и VLAN всех портов коммутаторов, несовпадения на стыках, узлы одной подсети в разных VLAN, шлюз в чужой VLAN','Аудит VLAN','vlan show – таблица портов (access N / trunk) и подключённых устройств; vlan check – найденные проблемы: trunk с одной стороны и access с другой, разные VLAN на концах канала между коммутаторами, trunk к конечному узлу, узлы одной подсети в разных VLAN, шлюз узла в другой VLAN.']);
+const vxScn=()=>({dev:[['pc','PC-A',40,120],['pc','PC-B',40,300],['msw','SW1',240,120],['msw','SW2',240,300]],link:[['SW1',0,'SW2',0],['PC-A',0,'SW1',1],['PC-B',0,'SW2',1]],
+ cfg:[['SW1','port fa0/1 trunk','port fa0/2 access 10'],['SW2','port fa0/1 access 20','port fa0/2 access 20'],['PC-A','ip eth0 192.168.10.10 /24'],['PC-B','ip eth0 192.168.10.11 /24']]});
+TPL.push(Object.assign({n:'VLAN: найти ошибки в настройке портов',d:'Два коммутатора и два компьютера одной подсети. PC-A и PC-B не видят друг друга: в настройке портов есть ошибки. Найдите их командами vlan show и vlan check.',hint:'Выполните vlan show и vlan check на любом коммутаторе. Исправьте порты (port fa0/1 trunk на SW2, port fa0/2 access 10 на SW2) и проверьте ping PC-A → PC-B.'},vxScn()));
+if(typeof EXNET!=='undefined')EXNET.push({n:'VLAN: исправить настройку портов',min:15,tag:'Коммутация',init:r=>({}),start:c=>{tplLoad(Object.assign({n:'VLAN',hint:''},vxScn()));p('PC-A и PC-B не видят друг друга. Найдите и исправьте ошибки в настройке VLAN.')},
+ text:c=>'PC-A и PC-B (192.168.10.10 и .11) должны находиться в VLAN 10 и пинговать друг друга через два коммутатора. Найдите ошибки командами vlan show и vlan check и исправьте настройку портов: канал между коммутаторами должен быть trunk с обеих сторон, порты компьютеров – access VLAN 10.',
+ crit:c=>{const S1=byNm('SW1'),S2=byNm('SW2'),A=byNm('PC-A'),B=byNm('PC-B'),pf=(d,n)=>d.ifaces.find(f=>f.n===n);
+  return[['Порт PC-B в VLAN 10',25,()=>{const f=pf(S2,'fa0/2');return!!f&&!f.tr&&vxV(f)===10}],['Канал между коммутаторами – trunk с обеих сторон',25,()=>!!pf(S1,'fa0/1').tr&&!!pf(S2,'fa0/1').tr],
+  ['vlan check не находит проблем',20,()=>vxInfo().P.length===0&&!!pf(S1,'fa0/2')&&vxV(pf(S1,'fa0/2'))===10],
+  ['PC-A → PC-B',30,()=>{computeRip();EX=[];return!!trip(A,B.ifaces[0].ip).ok}]]}});
+MAN.push(['Т76. Аудит VLAN: типовые ошибки настройки портов',`<p><b>Типовые ошибки.</b> 1) <i>Разные режимы на концах канала</i>: trunk с одной стороны, access с другой – через канал проходит только одна VLAN. 2) <i>Разные VLAN на концах access-канала</i> между коммутаторами. 3) <i>Узлы одной IP-подсети в разных VLAN</i> – они считают друг друга соседями, но кадры в другую VLAN не попадают. 4) <i>Шлюз узла в другой VLAN</i>: адрес шлюза есть, но достучаться до него нельзя. 5) <i>Trunk к конечному узлу</i>.</p>
+<p><b>Правило.</b> Одна VLAN = одна IP-подсеть = один широковещательный домен. Для связи между VLAN нужен маршрутизатор или L3-коммутатор с интерфейсом VLAN (SVI) в каждой VLAN.</p>
+<p><b>Команды Стектонии.</b> <code>vlan show</code> – таблица портов (access N / trunk) и подключённых устройств; <code>vlan check</code> – список найденных проблем. Настройка портов – <code>port fa0/1 trunk</code>, <code>port fa0/2 access 10</code>. Есть шаблон «VLAN: найти ошибки в настройке портов» и экзаменационное задание «VLAN: исправить настройку портов».</p>
+<p><b>Ограничения модели.</b> Не моделируются списки разрешённых VLAN на trunk, native VLAN и динамические протоколы (DTP, VTP); все управляемые коммутаторы считаются поддерживающими VLAN; анализ учитывает первый интерфейс конечного узла.</p>`]);
