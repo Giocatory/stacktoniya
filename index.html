@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Стектония — бесплатный сетевой симулятор в браузере для СПО, ГИА и демоэкзамена</title>
+<meta name="description" content="Стектония — открытый симулятор сетей и Linux прямо в браузере: консоли Cisco, Huawei, Eltex, Astra Linux, 70 лабораторных, режимы ГИА и «Профессионалы». Без установки, без регистрации, бесплатно.">
+<meta name="theme-color" content="#070b14">
+<meta property="og:title" content="Стектония — сетевой симулятор для будущих инженеров">
+<meta property="og:description" content="Открытый симулятор сетей и Linux в браузере: подготовка к ГИА, демонстрационному экзамену и реальной работе. Бесплатно и без регистрации.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/screens/topology.webp">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles/fonts.css">
+<link rel="stylesheet" href="styles/landing.css">
+</head>
+<body>
+<header class="top">
+ <div class="wrap hb">
+  <a class="logo" href="#top"><img src="assets/logo.svg" alt="" width="34" height="34">Стектония</a>
+  <button id="burger" aria-label="Меню" aria-expanded="false" aria-controls="nav">☰</button>
+  <nav id="nav">
+   <a href="#why">Почему</a><a href="#features">Возможности</a><a href="#gia">ГИА и ДЭ</a><a href="#screens">Скриншоты</a><a href="#opensource">Open source</a><a href="#support">Поддержать</a><a href="#feedback">Связь</a>
+   <a class="btn pri nav-cta" href="stecktonia/">Запустить</a>
+  </nav>
+ </div>
+</header>
+
+<main id="top">
+<section class="hero">
+ <canvas id="net" aria-hidden="true"></canvas>
+ <div class="wrap">
+  <div class="pill"><i></i> Open source · AGPL-3.0 · бесплатно · без регистрации</div>
+  <h1>Научись строить сети.<br><span class="grad">Прямо в браузере.</span></h1>
+  <p class="lead">«Стектония» — симулятор сетей и Linux для тех, кто учится на сетевого и системного администратора. Настраивайте маршрутизаторы <b>Cisco, Huawei, Eltex</b>, ломайте и чините сети, готовьтесь к <b>ГИА, демонстрационному экзамену</b> и реальной работе — без установки и без аккаунтов.</p>
+  <div class="cta">
+   <a class="btn pri" href="stecktonia/">▶ Открыть симулятор</a>
+   <a class="btn heart" href="#support">❤ Поддержать проект</a>
+   <a class="btn" data-cfg="repo" href="#" target="_blank" rel="noopener" hidden>★ GitHub</a>
+  </div>
+  <div class="hero-shot reveal"><img src="assets/screens/topology.webp" alt="Схема сети в Стектонии: компьютеры, маршрутизаторы, сервер и терминал" width="1920" height="1148"></div>
+  <div class="stats">
+   <div class="stat"><b data-count="70">70</b><span>лабораторных работ с проверкой</span></div>
+   <div class="stat"><b data-count="33">33</b><span>готовых шаблона сетей</span></div>
+   <div class="stat"><b data-count="22">22</b><span>экзаменационных задания</span></div>
+   <div class="stat"><b>0 ₽</b><span>и ни одной регистрации</span></div>
+  </div>
+ </div>
+</section>
+
+<section id="why" class="alt">
+ <div class="wrap">
+  <div class="eyebrow">Зачем это нужно</div>
+  <h2 class="sec-h reveal">Настоящая сеть — дорого. <span class="grad">Практика — бесплатно.</span></h2>
+  <p class="sec-p reveal">Чтобы стать инженером, нужно руками настроить сотни схем и сотни раз ошибиться. Но в колледже один стенд на десять студентов, дома — ноутбук, а зарубежные симуляторы то недоступны, то только на английском, то требуют образов, которых не достать. Мы сделали инструмент, который открывается за секунду на любом устройстве.</p>
+  <div class="scroll-x reveal"><table class="cmp">
+   <thead><tr><th></th><th class="us">Стектония</th><th>Cisco Packet Tracer</th><th>GNS3 / EVE-NG</th><th>s2 Nettest</th></tr></thead>
+   <tbody>
+    <tr><td>Работает в браузере, без установки</td><td class="us y">✓</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td></tr>
+    <tr><td>Бесплатно и без регистрации</td><td class="us y">✓</td><td class="p">нужен аккаунт</td><td class="p">нужны образы ОС</td><td class="p">лицензия</td></tr>
+    <tr><td>Консоли Cisco, Huawei <i>и российский Eltex</i></td><td class="us y">✓</td><td class="p">только Cisco</td><td class="p">нужны образы</td><td class="p">частично</td></tr>
+    <tr><td>Linux-терминал, Docker, Git, Ansible внутри</td><td class="us y">✓</td><td class="n">✗</td><td class="p">нужны ВМ</td><td class="n">✗</td></tr>
+    <tr><td>Модель Astra Linux (мандатный доступ)</td><td class="us y">✓</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td></tr>
+    <tr><td>Режимы ГИА, ДЭ и «Профессионалы» на русском</td><td class="us y">✓</td><td class="n">✗</td><td class="n">✗</td><td class="p">частично</td></tr>
+    <tr><td>Открытый код, можно развернуть у себя</td><td class="us y">✓</td><td class="n">✗</td><td class="p">частично</td><td class="n">✗</td></tr>
+    <tr><td>Работает на слабых ПК и планшетах</td><td class="us y">✓</td><td class="p">зависит</td><td class="n">✗ тяжёлый</td><td class="p">Windows</td></tr>
+   </tbody></table></div>
+  <p class="note reveal"><b>В России альтернатив нет.</b> По крайней мере, мы не знаем другого бесплатного, открытого, русскоязычного симулятора, который одновременно даёт консоли Cisco, Huawei и Eltex, Linux с Docker и Ansible, Astra Linux и режимы подготовки к ГИА и демоэкзамену — и открывается в браузере. Таблица составлена по открытым данным и может устаревать — если вы знаете достойную альтернативу, <a href="#feedback">напишите нам</a>, мы поправим.</p>
+ </div>
+</section>
+
+<section id="features">
+ <div class="wrap">
+  <div class="eyebrow">Возможности</div>
+  <h2 class="sec-h reveal">Целая лаборатория <span class="grad">в одной вкладке</span></h2>
+  <div class="grid g3">
+   <div class="card reveal"><div class="ic">🛰️</div><h3>Схемы и кабели</h3><p>Перетаскивайте ПК, коммутаторы, маршрутизаторы, межсетевые экраны, точки Wi‑Fi, серверы, камеры, ИБП. Кабели с типом и длиной, трассы, статусы портов.</p></div>
+   <div class="card reveal"><div class="ic">⌨️</div><h3>Консоли как у настоящих</h3><p>Cisco IOS, Huawei VRP, Eltex ESR: режимы, подсказки, <code>show</code>-команды. Привычный синтаксис, который потом пригодится на реальном оборудовании.</p></div>
+   <div class="card reveal"><div class="ic">🐧</div><h3>Linux внутри</h3><p>bash, vim, nano, python, пользователи и права, systemd, cron, ufw/iptables, Docker, Git, CI, Ansible. Скрипты проверяются автоматически.</p></div>
+   <div class="card reveal"><div class="ic">🔬</div><h3>Режим симуляции</h3><p>Пройдите по шагам путь пакета: заголовки Ethernet и IP, ARP, TTL, что делает каждый узел на каждом уровне OSI. Теория наконец становится видимой.</p></div>
+   <div class="card reveal"><div class="ic">🦈</div><h3>Анализатор пакетов</h3><p>Захват, фильтры в стиле Wireshark, дерево заголовков, hex-дамп и сохранение в <code>.pcap</code> — откройте файл в настоящем Wireshark.</p></div>
+   <div class="card reveal"><div class="ic">🧯</div><h3>Аварии и поиск неисправностей</h3><p>Обрыв канала, дубликаты адресов, петли STP, неверные VLAN и маршруты. Найдите причину — как на реальной эксплуатации.</p></div>
+   <div class="card reveal"><div class="ic">🌐</div><h3>Маршрутизация и службы</h3><p>OSPF, BGP, RIP, VRRP, BFD, PBR, NAT, ACL, VLAN, STP, IPv6, IPsec, 802.1X/RADIUS, DNS, DHCP, прокси, балансировщик, SIEM.</p></div>
+   <div class="card reveal"><div class="ic">👩‍🏫</div><h3>Для преподавателя</h3><p>Задания с критериями, ведомость группы в CSV, варианты по номеру, строгий режим экзамена, режим проектора, запись и воспроизведение сеанса.</p></div>
+   <div class="card reveal"><div class="ic">🔒</div><h3>Всё у вас на устройстве</h3><p>Нет серверной части и слежки: схемы хранятся в браузере. Можно работать офлайн или выложить у себя в классе — подойдёт любой статический хостинг.</p></div>
+  </div>
+ </div>
+</section>
+
+<section class="aud alt">
+ <div class="wrap">
+  <div class="eyebrow">Для кого</div>
+  <h2 class="sec-h reveal">Одна платформа — <span class="grad">четыре дороги к профессии</span></h2>
+  <div class="grid g4">
+   <div class="card reveal"><span class="tag">СТУДЕНТАМ СПО</span><h3>Учись и не бойся ошибаться</h3><p>09.02.06, 09.02.07, 10.02.05 и смежные. Лабораторные по темам курса, подсказки «?» у каждой кнопки, автоматическая проверка.</p></div>
+   <div class="card reveal"><span class="tag">ГИА И ДЭ</span><h3>Репетиция экзамена</h3><p>Три сценария демонстрационного экзамена на 180 минут, критерии, баллы, оценка по шкале и рейтинг. Тренируйтесь столько, сколько нужно.</p></div>
+   <div class="card reveal"><span class="tag">ПРЕПОДАВАТЕЛЯМ</span><h3>Стенд в каждом браузере</h3><p>Выдавайте задания, собирайте результаты, проводите контрольные без закупки оборудования и без установки на классные ПК.</p></div>
+   <div class="card reveal"><span class="tag">САМОУЧКАМ</span><h3>Путь с нуля до джуна</h3><p>От «что такое IP-адрес» до OSPF и Ansible. Пособие из 70 лабораторных ведёт шаг за шагом, а симулятор сразу всё проверяет.</p></div>
+  </div>
+ </div>
+</section>
+
+<section id="path">
+ <div class="wrap">
+  <div class="eyebrow">Дорожная карта</div>
+  <h2 class="sec-h reveal">Как стать <span class="grad">крутым специалистом</span></h2>
+  <p class="sec-p reveal">Не просто «потыкать кнопки», а выстроить навык: от основ к сложным схемам, от схем к экзамену, от экзамена к реальной работе.</p>
+  <div class="path">
+   <div class="step reveal"><div class="n">1</div><div class="b"><h3>Основы: адресация и первая сеть</h3><p>Два ПК, коммутатор, маршрутизатор. <code>ip</code>, <code>ping</code>, <code>tracert</code>, шлюзы, маски, VLSM. Учимся читать сеть глазами.</p></div></div>
+   <div class="step reveal"><div class="n">2</div><div class="b"><h3>Коммутация и маршрутизация</h3><p>VLAN, STP, статические маршруты, OSPF, BGP, VRRP. Ломаем канал — смотрим, как сеть выздоравливает сама.</p></div></div>
+   <div class="step reveal"><div class="n">3</div><div class="b"><h3>Безопасность и службы</h3><p>ACL, межсетевой экран и DMZ, VPN, 802.1X, DNS, DHCP, прокси, журналы и SIEM. Закрываем лишнее и находим атаку в логах.</p></div></div>
+   <div class="step reveal"><div class="n">4</div><div class="b"><h3>Linux и автоматизация</h3><p>Права, службы, cron, Docker, Git, CI, Ansible, Python. То, без чего сегодня не берут в администраторы.</p></div></div>
+   <div class="step reveal"><div class="n">5</div><div class="b"><h3>Экзамен: ГИА, ДЭ, «Профессионалы»</h3><p>Таймер, критерии, баллы, строгий режим. Привыкаем к давлению времени до того, как оно станет настоящим.</p></div></div>
+   <div class="step reveal"><div class="n">6</div><div class="b"><h3>Реальная работа</h3><p>Привычка диагностировать, документировать и проверять. Синтаксис консолей совпадает с рабочим — на оборудовании вы уже «дома».</p></div></div>
+  </div>
+ </div>
+</section>
+
+<section id="gia" class="alt">
+ <div class="wrap gia">
+  <div>
+   <div class="eyebrow">ГИА · ДЭ · Профессионалы</div>
+   <h2 class="sec-h reveal">Придите на экзамен <span class="grad">уже уверенным</span></h2>
+   <p class="sec-p reveal">Страшен не экзамен, а неизвестность. Здесь вы заранее проживёте его формат — столько раз, сколько захотите.</p>
+   <ul class="checks reveal">
+    <li><b>Три модуля на единой схеме:</b> сетевая инфраструктура, сервисы и безопасность, администрирование Linux.</li>
+    <li><b>Варианты по номеру:</b> тот же номер — те же условия, можно честно сравнивать результаты.</li>
+    <li><b>Критерии и баллы</b> с оценкой по настраиваемой шкале, строгий режим без подсказок.</li>
+    <li><b>Скрипты и Git</b> проверяются автоматически — как на реальном задании.</li>
+    <li><b>Ведомость группы</b> для преподавателя: загрузите файлы результатов и получите таблицу и CSV.</li>
+   </ul>
+   <p class="note">Это учебная модель формата, составленная для тренировки. Официальные задания и нормативы уточняйте у методиста и в документах организатора.</p>
+  </div>
+  <div class="reveal"><img src="assets/screens/gia.webp" alt="Окно подготовки к ГИА: модули, веса, время, шкала оценок" loading="lazy" width="1920" height="1148"></div>
+ </div>
+</section>
+
+<section id="screens">
+ <div class="wrap">
+  <div class="center">
+   <div class="eyebrow">Скриншоты</div>
+   <h2 class="sec-h reveal">Посмотрите, <span class="grad">как это выглядит</span></h2>
+  </div>
+  <div class="shot-tabs" role="tablist">
+   <button class="shot-tab on" role="tab" aria-selected="true" data-src="assets/screens/topology.webp" data-alt="Схема сети" data-cap="Схема «Три филиала: OSPF и NAT» — перетаскивайте, соединяйте, настраивайте.">Схема</button>
+   <button class="shot-tab" role="tab" aria-selected="false" data-src="assets/screens/terminal.webp" data-alt="Терминал и ping" data-cap="Консоль узла: ping, traceroute и десятки команд — как на настоящем устройстве.">Терминал</button>
+   <button class="shot-tab" role="tab" aria-selected="false" data-src="assets/screens/simulation.webp" data-alt="Режим симуляции" data-cap="Режим симуляции: каждый шаг пакета, заголовки, TTL, MAC и уровни OSI.">Симуляция</button>
+   <button class="shot-tab" role="tab" aria-selected="false" data-src="assets/screens/packet-analyzer.webp" data-alt="Анализатор пакетов" data-cap="Анализатор пакетов: фильтры, дерево протоколов, hex-дамп, экспорт в .pcap.">Анализатор</button>
+   <button class="shot-tab" role="tab" aria-selected="false" data-src="assets/screens/templates.webp" data-alt="Шаблоны схем" data-cap="33 готовых шаблона: от малого офиса до BGP с двумя провайдерами и IPsec.">Шаблоны</button>
+   <button class="shot-tab" role="tab" aria-selected="false" data-src="assets/screens/exam.webp" data-alt="Экзамен" data-cap="Экзамен: банк заданий, таймер, критерии и ведомость группы.">Экзамен</button>
+   <button class="shot-tab" role="tab" aria-selected="false" data-src="assets/screens/dark-theme.webp" data-alt="Тёмная тема" data-cap="Тёмная тема — для долгих вечерних практикумов.">Тёмная тема</button>
+  </div>
+  <div class="frame reveal"><div class="bar"><i></i><i></i><i></i></div><img id="shot-img" src="assets/screens/topology.webp" alt="Схема сети" width="1920" height="1148"></div>
+  <p class="shot-cap" id="shot-cap">Схема «Три филиала: OSPF и NAT» — перетаскивайте, соединяйте, настраивайте.</p>
+  <div class="cta"><a class="btn pri" href="stecktonia/">▶ Попробовать самому — это быстрее, чем читать</a></div>
+ </div>
+</section>
+
+<section id="opensource" class="alt">
+ <div class="wrap">
+  <div class="os reveal">
+   <div>
+    <div class="eyebrow">Open source</div>
+    <h2 class="sec-h">Открытый код. <span class="grad">Навсегда открытый.</span></h2>
+    <p class="sec-p">«Стектония» — свободное программное обеспечение под лицензией <b>GNU AGPL‑3.0</b>. Вы можете использовать, изучать, изменять и распространять её — в том числе в колледже и в коммерческих проектах. Единственное условие: если вы улучшаете «Стектонию» и даёте пользоваться ей другим (даже через сайт), вы публикуете свои улучшения на тех же условиях. Так проект остаётся общим.</p>
+    <div class="chips"><span class="chip">AGPL-3.0-or-later</span><span class="chip">HTML · CSS · JS</span><span class="chip">без фреймворков</span><span class="chip">без трекеров</span><span class="chip">офлайн</span></div>
+    <div class="cta" style="justify-content:flex-start"><a class="btn" data-cfg="repo" href="#" target="_blank" rel="noopener" hidden>Исходный код на GitHub</a><a class="btn" href="#feedback">Предложить улучшение</a></div>
+   </div>
+   <div class="lic"><b>$</b> git clone …/stacktoniya<br><b>$</b> python3 -m http.server 8080<br><span style="color:var(--ac)">→ http://localhost:8080</span><br><br># хотите помочь?<br># — найдите ошибку в консоли<br># — добавьте шаблон или лабораторную<br># — переведите, улучшите, расскажите<br>#   коллегам и студентам</div>
+  </div>
+ </div>
+</section>
+
+<section id="support" class="don">
+ <div class="wrap">
+  <div class="heart-ic">❤</div>
+  <div class="eyebrow">Поддержать развитие</div>
+  <h2 class="sec-h reveal" style="margin:0 auto">Проект делает один преподаватель. <span class="grad">С вашей помощью — быстрее.</span></h2>
+  <p class="sec-p reveal" style="margin-left:auto;margin-right:auto">Стектония была и останется бесплатной. Но домен, хостинг, время на новые лабораторные и проверку каждой функции стоят ресурсов. Если проект помог вам или вашим студентам — поддержите его любой суммой. Это самая прямая благодарность.</p>
+  <div class="goals reveal">
+   <div class="goal"><b>🌍 Домен и хостинг</b><span>Чтобы сайт открывался быстро и всегда, а не «когда получится».</span></div>
+   <div class="goal"><b>🧪 Новые лабораторные</b><span>Больше сценариев, консолей, шаблонов и заданий для экзаменов.</span></div>
+   <div class="goal"><b>🧰 Качество</b><span>Тесты, проверки на реальных примерах и аккуратная документация.</span></div>
+  </div>
+  <div id="donate-methods"></div>
+  <p id="donate-soon" class="note" style="margin:30px auto 0;text-align:center" hidden>Способы поддержки появятся здесь совсем скоро. А пока — напишите нам через форму ниже или поставьте звезду проекту.</p>
+  <p class="free-ways">Нет возможности донатить? Это тоже огромная помощь: <b>поставьте звезду</b> на GitHub, <b>расскажите</b> одногруппникам и коллегам, <b>сообщите об ошибке</b> или предложите идею.</p>
+ </div>
+</section>
+
+<section id="faq" class="alt">
+ <div class="wrap" style="max-width:860px">
+  <div class="eyebrow">Вопросы</div>
+  <h2 class="sec-h reveal">Коротко <span class="grad">о главном</span></h2>
+  <div style="margin-top:36px">
+   <details class="faq" open><summary>Это правда бесплатно?</summary><p>Да. Нет подписок, рекламы и скрытых платежей. Поддержка проекта — только добровольная.</p></details>
+   <details class="faq"><summary>Нужно ли что-то устанавливать или регистрироваться?</summary><p>Нет. Откройте страницу симулятора в любом современном браузере — на ПК, ноутбуке или планшете. Работа сохраняется в вашем браузере.</p></details>
+   <details class="faq"><summary>Это точная копия оборудования Cisco, Huawei или Eltex?</summary><p>Нет. Это учебная модель: она воспроизводит логику сети и привычный синтаксис команд, но не заменяет реальное оборудование и не содержит прошивок. Названия производителей принадлежат их владельцам и используются только для обозначения совместимого синтаксиса.</p></details>
+   <details class="faq"><summary>Можно ли использовать в колледже и на занятиях?</summary><p>Да, именно для этого проект и создан. Можно открыть на сайте или развернуть у себя: достаточно любого веб-сервера. Лицензия AGPL разрешает это бесплатно.</p></details>
+   <details class="faq"><summary>Это официальная подготовка к ГИА и демоэкзамену?</summary><p>Это учебная модель формата для тренировки. Официальные задания и критерии определяет организатор экзамена — сверяйтесь с его документами.</p></details>
+   <details class="faq"><summary>Куда уходят пожертвования?</summary><p>На домен, хостинг, разработку и проверку новых лабораторных и сценариев. Проект остаётся открытым при любых обстоятельствах.</p></details>
+   <details class="faq"><summary>Как сообщить об ошибке или предложить идею?</summary><p>Форма ниже — автор читает все сообщения и отвечает на почту. Если у вас есть аккаунт GitHub, можно также завести issue в репозитории.</p></details>
+  </div>
+ </div>
+</section>
+
+<section id="feedback">
+ <div class="wrap">
+  <div class="eyebrow">Контакты</div>
+  <h2 class="sec-h reveal">Нашли ошибку? <span class="grad">Есть идея?</span></h2>
+  <p class="sec-p reveal">Каждое сообщение читает автор проекта. Пожелания студентов и преподавателей напрямую определяют, что появится в следующей версии. Хотите предложить сотрудничество — тоже пишите, удобным для вас способом.</p>
+  <div class="ctl reveal">
+   <a class="ct" href="https://t.me/Giocatory" target="_blank" rel="noopener"><b>Telegram</b><span>@Giocatory</span></a>
+   <a class="ct" href="tel:+79965845547"><b>Max</b><span>+7 996 584-54-47</span></a>
+   <a class="ct" href="mailto:python@derkunov.ru"><b>Email</b><span>python@derkunov.ru</span></a>
+   <a class="ct" href="https://tenchat.ru/giocatory" target="_blank" rel="noopener"><b>TenChat</b><span>tenchat.ru/giocatory</span></a>
+   <a class="ct" href="https://github.com/Giocatory" target="_blank" rel="noopener"><b>GitHub</b><span>github.com/Giocatory</span></a>
+  </div>
+ </div>
+</section>
+</main>
+
+<footer>
+ <div class="wrap">
+  <div class="fg">
+   <div><a class="logo" href="#top"><img src="assets/logo.svg" alt="" width="34" height="34">Стектония</a><p style="margin:12px 0 0;max-width:340px">Открытый сетевой симулятор для будущих инженеров. © <span id="year">2026</span></p></div>
+   <nav><a href="stecktonia/">Симулятор</a><a href="#screens">Скриншоты</a><a href="#support">Поддержать</a><a href="privacy.html">Конфиденциальность</a><a data-cfg="repo" href="#" hidden>GitHub</a><a data-cfg="tenchat" href="#" hidden>TenChat</a></nav>
+  </div>
+  <p class="disc">Стектония — независимый учебный проект под лицензией AGPL-3.0-or-later; программа предоставляется «как есть», без гарантий. Cisco, Huawei, Eltex, Astra Linux, Wireshark и другие названия принадлежат их владельцам и упоминаются только для описания совместимого синтаксиса и учебных целей; проект с ними не связан и не одобрен ими. Криптографические функции в симуляторе — учебные модели и не предназначены для защиты реальных данных.</p>
+ </div>
+</footer>
+<script src="scripts/config.js"></script>
+<script src="scripts/main.js"></script>
+</body>
+</html>
