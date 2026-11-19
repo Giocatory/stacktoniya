@@ -1,0 +1,14 @@
+const ok=(c,m)=>console.log((c?'PASS ':'FAIL ')+m);
+tplLoad(TPL[0]);const go=c=>{sel=S.devs[0].id;const o=out.textContent.length;try{run(c)}catch(e){console.log('ERR',c,e.message)}return out.textContent.slice(o)};
+let t=go('apropos bfd');console.log(t);ok(/Команды/.test(t)&&/bfd </.test(t)&&/Т69/.test(t),'bfd command and manual');
+t=go('apropos маршрутизация');ok(/Команды \(/.test(t),'russian word: '+t.split('\n')[0]);
+t=go('apropos vlsm подсети');console.log(t);ok(/vlsm/.test(t)&&/Т71/.test(t),'two words');
+t=go('apropos acl аудит');ok(/acl audit/.test(t),'acl audit');
+t=go('APROPOS ВЫХОД');ok(typeof t==='string','case');
+t=go('apropos zzzqqq');ok(/ничего не найдено/.test(t),'nothing');
+t=go('apropos');ok(/Использование/.test(t),'usage');
+t=go('apropos ipam конфликт');ok(/ipam/.test(t),'ipam');
+t=go('apropos ping');ok(/Команды/.test(t)&&t.split('\n').length<60,'bounded output');
+const f=apFind(['a']);ok(Array.isArray(f.res),'single-letter does not crash');
+CMDS.push(null,[],[1]);t=go('apropos vlan');ok(/Команды/.test(t),'robust to junk entries');CMDS.length-=3;
+ok(MAN.some(m=>/Т74/.test(m[0])),'manual');

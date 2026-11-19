@@ -1,0 +1,7 @@
+{
+  "name": "stacktoniya-tests",
+  "private": true,
+  "description": "Автотесты симулятора «Стектония» (jsdom, без браузера)",
+  "scripts": { "test": "node run.js" },
+  "devDependencies": { "jsdom": "^26.0.0" }
+}

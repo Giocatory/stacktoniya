@@ -1,0 +1,11 @@
+const ok=(c,m)=>console.log((c?'PASS ':'FAIL ')+m);
+tplLoad(TPL.find(x=>/ACL: аудит правил/.test(x.n)));
+const J=()=>{tplLoad(TPL.find(x=>/ACL: аудит правил/.test(x.n)));return JSON.parse(JSON.stringify(S))};const ld=j=>schemeSet(j);
+let j=J();ok(ld(j)&&byNm('R1').acl.length===3,'valid acl kept (3 rules)');
+j=J();j.devs.find(d=>d.name==='R1').acl=true;ok(ld(j)&&!('acl' in byNm('R1')),'acl=true dropped');
+j=J();j.devs.find(d=>d.name==='R1').acl={0:{a:'deny'}};ok(ld(j)&&!('acl' in byNm('R1')),'acl object dropped');
+j=J();j.devs.find(d=>d.name==='R1').acl.push(null,{a:'allow',sn:'1.1.1.1',sm:'255.255.255.0',dn:'1.1.1.1',dm:'255.255.255.0'},{a:'deny',sn:'x',sm:1,dn:2,dm:3});ok(ld(j)&&byNm('R1').acl.length===3,'bad rules removed, good kept');
+j=J();const r=j.devs.find(d=>d.name==='R1').acl[1];r.pr='icmp';r.pt='x';r.txt=5;ok(ld(j)&&byNm('R1').acl[1].pr===''&&byNm('R1').acl[1].pt===0&&!('txt' in byNm('R1').acl[1]),'fields normalised');
+j=J();j.devs.find(d=>d.name==='R1').acl6='zzz';ok(ld(j)&&!('acl6' in byNm('R1')),'acl6 junk dropped');
+j=J();j.devs.find(d=>d.name==='R1').acl6=[{a:'deny',sn:'2001:db8::',sl:64,dn:'2001:db8:1::',dl:64},{a:'deny',sn:1}];ok(ld(j)&&byNm('R1').acl6.length===1,'acl6 valid kept');
+sel=byNm('R1').id;run('show running-config');ok(true,'running-config does not crash');

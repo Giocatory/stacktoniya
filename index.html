@@ -4,12 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Стектония — бесплатный сетевой симулятор в браузере для СПО, ГИА и демоэкзамена</title>
-<meta name="description" content="Стектония — открытый симулятор сетей и Linux прямо в браузере: консоли Cisco, Huawei, Eltex, Astra Linux, 70 лабораторных, режимы ГИА и «Профессионалы». Без установки, без регистрации, бесплатно.">
+<meta name="description" content="Стектония — открытый симулятор сетей и Linux прямо в браузере: консоли Cisco, Huawei, Eltex, Astra Linux, 71 лабораторных, режимы ГИА и «Профессионалы». Без установки, без регистрации, бесплатно.">
 <meta name="theme-color" content="#070b14">
 <meta property="og:title" content="Стектония — сетевой симулятор для будущих инженеров">
 <meta property="og:description" content="Открытый симулятор сетей и Linux в браузере: подготовка к ГИА, демонстрационному экзамену и реальной работе. Бесплатно и без регистрации.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="assets/screens/topology.webp">
+<link rel="canonical" href="https://stacktoniya.ru/">
+<meta property="og:url" content="https://stacktoniya.ru/">
+<meta property="og:site_name" content="Стектония">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:image" content="https://stacktoniya.ru/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Стектония — сетевой симулятор в браузере">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","url":"https://stacktoniya.ru/","image":"https://stacktoniya.ru/assets/og.jpg","name":"Стектония","applicationCategory":"EducationalApplication","operatingSystem":"Любая (браузер)","inLanguage":"ru","license":"https://www.gnu.org/licenses/agpl-3.0.html","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"RUB"},"author":{"@type":"Person","name":"Giocatory","url":"https://github.com/Giocatory"},"description":"Открытый сетевой симулятор и Linux-терминал в браузере для СПО, ГИА и демонстрационного экзамена."}</script>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://stacktoniya.ru/assets/og.jpg">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
 <link rel="stylesheet" href="styles/fonts.css">
@@ -21,7 +31,7 @@
   <a class="logo" href="#top"><img src="assets/logo.svg" alt="" width="34" height="34">Стектония</a>
   <button id="burger" aria-label="Меню" aria-expanded="false" aria-controls="nav">☰</button>
   <nav id="nav">
-   <a href="#why">Почему</a><a href="#features">Возможности</a><a href="#gia">ГИА и ДЭ</a><a href="#screens">Скриншоты</a><a href="#opensource">Open source</a><a href="#support">Поддержать</a><a href="#feedback">Связь</a>
+   <a href="#why">Почему</a><a href="#features">Возможности</a><a href="#gia">ГИА и ДЭ</a><a href="#demo">Демо</a><a href="#screens">Скриншоты</a><a href="#opensource">Open source</a><a href="#support">Поддержать</a><a href="#feedback">Связь</a>
    <a class="btn pri nav-cta" href="stecktonia/">Запустить</a>
   </nav>
  </div>
@@ -41,9 +51,9 @@
   </div>
   <div class="hero-shot reveal"><img src="assets/screens/topology.webp" alt="Схема сети в Стектонии: компьютеры, маршрутизаторы, сервер и терминал" width="1920" height="1148"></div>
   <div class="stats">
-   <div class="stat"><b data-count="70">70</b><span>лабораторных работ с проверкой</span></div>
-   <div class="stat"><b data-count="33">33</b><span>готовых шаблона сетей</span></div>
-   <div class="stat"><b data-count="22">22</b><span>экзаменационных задания</span></div>
+   <div class="stat"><b data-count="71">71</b><span>лабораторных работ с проверкой</span></div>
+   <div class="stat"><b data-count="34">34</b><span>готовых шаблона сетей</span></div>
+   <div class="stat"><b data-count="23">23</b><span>экзаменационных задания</span></div>
    <div class="stat"><b>0 ₽</b><span>и ни одной регистрации</span></div>
   </div>
  </div>
@@ -96,7 +106,7 @@
    <div class="card reveal"><span class="tag">СТУДЕНТАМ СПО</span><h3>Учись и не бойся ошибаться</h3><p>09.02.06, 09.02.07, 10.02.05 и смежные. Лабораторные по темам курса, подсказки «?» у каждой кнопки, автоматическая проверка.</p></div>
    <div class="card reveal"><span class="tag">ГИА И ДЭ</span><h3>Репетиция экзамена</h3><p>Три сценария демонстрационного экзамена на 180 минут, критерии, баллы, оценка по шкале и рейтинг. Тренируйтесь столько, сколько нужно.</p></div>
    <div class="card reveal"><span class="tag">ПРЕПОДАВАТЕЛЯМ</span><h3>Стенд в каждом браузере</h3><p>Выдавайте задания, собирайте результаты, проводите контрольные без закупки оборудования и без установки на классные ПК.</p></div>
-   <div class="card reveal"><span class="tag">САМОУЧКАМ</span><h3>Путь с нуля до джуна</h3><p>От «что такое IP-адрес» до OSPF и Ansible. Пособие из 70 лабораторных ведёт шаг за шагом, а симулятор сразу всё проверяет.</p></div>
+   <div class="card reveal"><span class="tag">САМОУЧКАМ</span><h3>Путь с нуля до джуна</h3><p>От «что такое IP-адрес» до OSPF и Ansible. Пособие из 71 лабораторных ведёт шаг за шагом, а симулятор сразу всё проверяет.</p></div>
   </div>
  </div>
 </section>
@@ -136,6 +146,14 @@
  </div>
 </section>
 
+<section id="demo">
+ <div class="wrap">
+  <div class="eyebrow">В действии</div>
+  <h2 class="sec-h reveal">Меньше минуты, чтобы <span class="grad">понять, как это работает</span></h2>
+  <p class="sec-p reveal">Схема, консоль, ping и tracert, пошаговый режим симуляции с уровнями OSI и тёмная тема — всё в обычном браузере.</p>
+  <div class="demo reveal"><video autoplay muted loop playsinline preload="metadata" poster="assets/screens/demo-poster.webp" aria-label="Демонстрация работы Стектонии"><source src="assets/demo.mp4" type="video/mp4"><img src="assets/demo.gif" alt="Демонстрация работы Стектонии"></video></div>
+ </div>
+</section>
 <section id="screens">
  <div class="wrap">
   <div class="center">
@@ -147,7 +165,7 @@
    <button class="shot-tab" role="tab" aria-selected="false" data-src="assets/screens/terminal.webp" data-alt="Терминал и ping" data-cap="Консоль узла: ping, traceroute и десятки команд — как на настоящем устройстве.">Терминал</button>
    <button class="shot-tab" role="tab" aria-selected="false" data-src="assets/screens/simulation.webp" data-alt="Режим симуляции" data-cap="Режим симуляции: каждый шаг пакета, заголовки, TTL, MAC и уровни OSI.">Симуляция</button>
    <button class="shot-tab" role="tab" aria-selected="false" data-src="assets/screens/packet-analyzer.webp" data-alt="Анализатор пакетов" data-cap="Анализатор пакетов: фильтры, дерево протоколов, hex-дамп, экспорт в .pcap.">Анализатор</button>
-   <button class="shot-tab" role="tab" aria-selected="false" data-src="assets/screens/templates.webp" data-alt="Шаблоны схем" data-cap="33 готовых шаблона: от малого офиса до BGP с двумя провайдерами и IPsec.">Шаблоны</button>
+   <button class="shot-tab" role="tab" aria-selected="false" data-src="assets/screens/templates.webp" data-alt="Шаблоны схем" data-cap="34 готовых шаблона: от малого офиса до BGP с двумя провайдерами и IPsec.">Шаблоны</button>
    <button class="shot-tab" role="tab" aria-selected="false" data-src="assets/screens/exam.webp" data-alt="Экзамен" data-cap="Экзамен: банк заданий, таймер, критерии и ведомость группы.">Экзамен</button>
    <button class="shot-tab" role="tab" aria-selected="false" data-src="assets/screens/dark-theme.webp" data-alt="Тёмная тема" data-cap="Тёмная тема — для долгих вечерних практикумов.">Тёмная тема</button>
   </div>
@@ -225,7 +243,7 @@
  <div class="wrap">
   <div class="fg">
    <div><a class="logo" href="#top"><img src="assets/logo.svg" alt="" width="34" height="34">Стектония</a><p style="margin:12px 0 0;max-width:340px">Открытый сетевой симулятор для будущих инженеров. © <span id="year">2026</span></p></div>
-   <nav><a href="stecktonia/">Симулятор</a><a href="#screens">Скриншоты</a><a href="#support">Поддержать</a><a href="privacy.html">Конфиденциальность</a><a data-cfg="repo" href="#" hidden>GitHub</a><a data-cfg="tenchat" href="#" hidden>TenChat</a></nav>
+   <nav><a href="stecktonia/">Симулятор</a><a href="#screens">Скриншоты</a><a href="#support">Поддержать</a><a href="#feedback">Контакты</a><a href="privacy.html">Конфиденциальность</a><a data-cfg="repo" href="#" hidden>GitHub</a><a data-cfg="tenchat" href="#" hidden>TenChat</a></nav>
   </div>
   <p class="disc">Стектония — независимый учебный проект под лицензией AGPL-3.0-or-later; программа предоставляется «как есть», без гарантий. Cisco, Huawei, Eltex, Astra Linux, Wireshark и другие названия принадлежат их владельцам и упоминаются только для описания совместимого синтаксиса и учебных целей; проект с ними не связан и не одобрен ими. Криптографические функции в симуляторе — учебные модели и не предназначены для защиты реальных данных.</p>
  </div>

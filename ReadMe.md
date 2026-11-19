@@ -4,6 +4,8 @@
 
 # Стектония
 
+**Сайт: <https://stacktoniya.ru/> · Симулятор: <https://stacktoniya.ru/stecktonia/>**
+
 **Открытый сетевой симулятор и Linux-лаборатория в браузере — для СПО, ГИА, демонстрационного экзамена и реальной работы.**
 
 [![License: AGPL v3](https://img.shields.io/badge/license-AGPL--3.0--or--later-blue.svg)](LICENSE)
@@ -35,7 +37,7 @@
 
 ## Документация
 
-- 📘 [`docs/Пособие_Стектония.docx`](docs/Пособие_Стектония.docx) — учебно-методическое пособие для студентов и преподавателей (151 стр., 70 лабораторных работ).
+- 📘 [`docs/Пособие_Стектония.docx`](docs/Пособие_Стектония.docx) — учебно-методическое пособие для студентов и преподавателей (152 стр., 71 лабораторная работ).
 - 🛠 [`docs/Техническая_документация.md`](docs/Техническая_документация.md) — архитектура, модель данных, как добавить команду, шаблон или задание, тесты, публикация.
 
 ## Что это
@@ -67,35 +69,27 @@
 
 - **Схемы:** компьютеры, ноутбуки, серверы, смартфоны, коммутаторы L2/L3, маршрутизаторы, межсетевые экраны, точки Wi‑Fi, камеры, ИБП и др.; кабели с типом и длиной, трассы, статусы портов.
 - **Консоли:** Cisco IOS, Huawei VRP, Eltex ESR; режимы, подсказки, `show`-команды.
-- **Маршрутизация и коммутация:** статические маршруты, OSPF, RIP, BGP, VRRP, BFD, PBR, редистрибуция, VLAN, STP, IPv6, NAT, ACL, IP SLA.
+- **Маршрутизация и коммутация:** статические маршруты, OSPF, RIP, BGP, VRRP, BFD, VRF-lite, PBR, редистрибуция, VLAN, STP, IPv6, NAT, ACL, IP SLA.
 - **Службы и безопасность:** DNS, DHCP, прокси, балансировщик, IPsec, 802.1X/RADIUS, syslog, SIEM, межсетевой экран и DMZ.
 - **Linux:** bash, vim, nano, python, пользователи и права, systemd, cron, ufw/iptables, Docker, Git, CI, Ansible.
 - **Режим симуляции:** пошаговый путь пакета с заголовками Ethernet/IP, ARP, TTL и объяснением по уровням OSI.
 - **Анализатор пакетов:** захват, фильтры в стиле Wireshark, дерево протоколов, hex, экспорт `.pcap`.
-- **Практика:** 70 лабораторных, 33 шаблона схем, аварии и поиск неисправностей, задания со скриптами.
-- **Экзамены:** 22 экзаменационных задания, режимы ГИА («Филиал», «Два офиса», «Офис с DMZ») и «Профессионалы», критерии, баллы, строгий режим, рейтинг.
+- **Практика:** 71 лабораторная, 34 шаблона схем, аварии и поиск неисправностей, задания со скриптами.
+- **Экзамены:** 23 экзаменационных задания, режимы ГИА («Филиал», «Два офиса», «Офис с DMZ») и «Профессионалы», критерии, баллы, строгий режим, рейтинг.
 - **Для преподавателя:** задания с критериями, ведомость группы (CSV), режим проектора, запись и воспроизведение терминала, совместная работа без сервера.
 - **Тёмная и светлая темы**, работа офлайн.
+
+## Демо
+
+![Демо Стектонии](assets/demo.gif)
 
 ## Скриншоты
 
 <table>
-<tr>
-<td width="50%"><img src="assets/screens/terminal.webp" alt="Терминал"><br><sub>Консоль узла: ping, traceroute и десятки команд</sub></td>
-<td width="50%"><img src="assets/screens/simulation.webp" alt="Режим симуляции"><br><sub>Режим симуляции: путь пакета по шагам</sub></td>
-</tr>
-<tr>
-<td><img src="assets/screens/packet-analyzer.webp" alt="Анализатор пакетов"><br><sub>Анализатор пакетов и экспорт в .pcap</sub></td>
-<td><img src="assets/screens/templates.webp" alt="Шаблоны"><br><sub>33 готовых шаблона сетей</sub></td>
-</tr>
-<tr>
-<td><img src="assets/screens/gia.webp" alt="ГИА"><br><sub>Подготовка к ГИА: модули, баллы, шкала</sub></td>
-<td><img src="assets/screens/exam.webp" alt="Экзамен"><br><sub>Экзамен: банк заданий и ведомость группы</sub></td>
-</tr>
-<tr>
-<td><img src="assets/screens/dark-theme.webp" alt="Тёмная тема"><br><sub>Тёмная тема</sub></td>
-<td><img src="assets/screens/admin-list.webp" alt="Админка"><br><sub>Админка: входящие сообщения</sub></td>
-</tr>
+<tr><td><img src="assets/screens/topology.webp" alt="Схема сети с маршрутизаторами"><br><sub>Схема сети с маршрутизаторами</sub></td><td><img src="assets/screens/terminal.webp" alt="Консоль устройства"><br><sub>Консоль устройства</sub></td></tr>
+<tr><td><img src="assets/screens/simulation.webp" alt="Режим симуляции: уровни OSI"><br><sub>Режим симуляции: уровни OSI</sub></td><td><img src="assets/screens/packet-analyzer.webp" alt="Анализатор пакетов"><br><sub>Анализатор пакетов</sub></td></tr>
+<tr><td><img src="assets/screens/templates.webp" alt="34 готовых шаблона сетей"><br><sub>34 готовых шаблона сетей</sub></td><td><img src="assets/screens/exam.webp" alt="Экзамен с таймером"><br><sub>Экзамен с таймером</sub></td></tr>
+<tr><td><img src="assets/screens/gia.webp" alt="Режим ГИА · ДЭ"><br><sub>Режим ГИА · ДЭ</sub></td><td><img src="assets/screens/dark-theme.webp" alt="Тёмная тема"><br><sub>Тёмная тема</sub></td></tr>
 </table>
 
 ## Быстрый старт
@@ -103,7 +97,7 @@
 **Ничего устанавливать не нужно.** Проект — чистая статика (HTML/CSS/JS), сервер не нужен.
 
 ```bash
-git clone https://github.com/<ваш-аккаунт>/stacktoniya.git
+git clone https://github.com/Giocatory/stacktoniya.git
 cd stacktoniya
 python3 -m http.server 8080        # любой статический сервер; можно и просто открыть index.html
 ```
@@ -120,6 +114,13 @@ python3 -m http.server 8080        # любой статический серв�
 3. Заполните `scripts/config.js` (см. ниже) и `privacy.html`.
 4. Проверьте: главная, `/stecktonia/`, `/privacy.html`, мобильный вид.
 
+### Домен stacktoniya.ru на reg.ru
+
+1. В личном кабинете reg.ru откройте услугу хостинга и загрузите **содержимое** папки `stacktoniya/` (в том числе скрытый файл `.htaccess`) в каталог сайта домена `stacktoniya.ru` (обычно `www/stacktoniya.ru/`).
+2. Включите SSL-сертификат (Let's Encrypt) для домена; `.htaccess` сам перенаправит http → https и www → без www.
+3. Проверьте: <https://stacktoniya.ru/>, <https://stacktoniya.ru/stecktonia/>, <https://stacktoniya.ru/robots.txt>, <https://stacktoniya.ru/sitemap.xml>, несуществующий адрес (должна открыться страница 404).
+4. Добавьте сайт в Яндекс Вебмастер и Google Search Console (файл sitemap уже готов).
+
 Для GitHub Pages: Settings → Pages → Deploy from branch → `main` / `(root)`.
 
 ## Лендинг: настройка
@@ -128,8 +129,8 @@ python3 -m http.server 8080        # любой статический серв�
 
 ```js
 window.STACK_CONFIG = {
-  repo: "https://github.com/<ваш-аккаунт>/stacktoniya",
-  github: "https://github.com/<ваш-аккаунт>",
+  repo: "https://github.com/Giocatory/stacktoniya",
+  github: "https://github.com/Giocatory",
   tenchat: "https://tenchat.ru/<аккаунт>",
   donate: { sbp: "https://…", card: "…", cardLabel: "Карта •• 1234", boosty: "", yoomoney: "", crypto: "" },
   publicEmail: "python@derkunov.ru"
@@ -150,6 +151,8 @@ stacktoniya/
 ├── styles/          стили лендинга и подключение шрифтов
 ├── scripts/         скрипты лендинга и config.js
 ├── index.html       лендинг
+├── tests/               автотесты симулятора (jsdom)
+├── 404.html, robots.txt  страница ошибки и правила для поисковиков
 ├── privacy.html     шаблон политики конфиденциальности
 ├── favicon.ico
 ├── LICENSE          GNU AGPL-3.0-or-later
@@ -158,7 +161,15 @@ stacktoniya/
 
 ## Тесты
 
-Симулятор проверялся регрессионными сценариями в headless-браузере (Playwright); исходный набор тестов поставляется отдельно и может быть добавлен в `tests/`.
+Симулятор покрыт автотестами (jsdom, без браузера): 59 файлов, около 1 000 проверок.
+
+```bash
+cd tests
+npm install
+npm test
+```
+
+Описание — в [`tests/README.md`](tests/README.md).
 
 ## Безопасность и приватность
 

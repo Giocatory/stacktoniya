@@ -1,0 +1,32 @@
+const ok=(c,m)=>console.log((c?'PASS ':'FAIL ')+m);
+let R=byNm?null:null;const go=(d,c)=>{sel=d.id;const o=out.textContent.length;try{run(c)}catch(e){console.log('ERR',c,e.message)}return out.textContent.slice(o)};
+ok(!tplLoad(TPL.find(x=>/VLSM: три сети/.test(x.n))).length,'tpl');
+const A=byNm('PC-A'),R1=byNm('R1'),R2=byNm('R2'),B=byNm('PC-B');
+let t=go(R1,'subcalc 192.168.10.77/26');console.log(t);ok(/Сеть:\s+192\.168\.10\.64\/26/.test(t)&&/192\.168\.10\.127/.test(t)&&/Число хостов:\s+62/.test(t)&&/частный/.test(t),'subcalc /26');
+ok(/адрес сети/.test(go(R1,'subcalc 10.0.0.0/8'))&&/широковещательный адрес/.test(go(R1,'subcalc 192.168.1.255/24')),'roles');
+ok(/Использование/.test(go(R1,'subcalc 1.2.3.4/33'))&&/Использование/.test(go(R1,'subcalc foo')),'bad input');
+ok(/\/31/.test(go(R1,'subcalc 10.0.0.0/31'))&&/Число хостов:\s+2/.test(go(R1,'subcalc 10.0.0.0/31')),'/31');
+t=go(R1,'vlsm 192.168.20.0/24 60 25 2');console.log(t);ok(/192\.168\.20\.0\/26/.test(t)&&/192\.168\.20\.64\/27/.test(t)&&/192\.168\.20\.96\/30/.test(t),'vlsm layout');
+t=go(R1,'vlsm 192.168.10.0/24 100 50 20 2');ok(/10\.0\/25/.test(t)&&/128\/26/.test(t)&&/192\/27/.test(t)&&/224\/30/.test(t),'vlsm 100/50/20/2');
+t=go(R1,'vlsm 192.168.10.0/24 200 100');ok(/не помещается/.test(t)&&/не поместилось/.test(t),'does not fit');
+ok(/Использование/.test(go(R1,'vlsm 192.168.10.0/24'))&&/Использование/.test(go(R1,'vlsm 192.168.10.0/24 0 x')),'vlsm usage');
+t=go(R1,'subtask');console.log(t);ok(/Задача/.test(t)&&VS_T.needs.length===4,'task new default');
+go(R1,'subtask new легко');ok(VS_T.needs.length===3,'easy');go(R1,'subtask new сложно');ok(VS_T.needs.length===5&&VS_T.base.l===22,'hard');
+for(let k=0;k<30;k++){go(R1,'subtask new '+['легко','средне','сложно'][k%3]);const S=vsAlloc(VS_T.base,VS_T.needs);if(S.some(r=>r.fail)){ok(false,'unsolvable task');break}}
+go(R1,'subtask new средне');const sol=vsAlloc(VS_T.base,VS_T.needs).sort((a,b)=>a.i-b.i).map(r=>n2ip(r.net)+'/'+r.l);
+t=go(R1,'subtask answer '+sol.join(' '));ok(/Задача решена/.test(t),'correct answer accepted');
+const wrong=sol.slice();wrong[0]=wrong[0].replace(/\/\d+$/,'/32');t=go(R1,'subtask answer '+wrong.join(' '));ok(/мала/.test(t)&&/Верно: 3 из 4/.test(t),'too small');
+const big=sol.slice();big[0]=big[0].replace(/\/\d+$/,'/24');t=go(R1,'subtask answer '+big.join(' '));ok(/слишком велика|выходит|пересекается/.test(t),'too big: '+t.split('\n')[1]);
+const ov=sol.slice();ov[1]=sol[0];t=go(R1,'subtask answer '+ov.join(' '));ok(/пересекается/.test(t)||/слишком велика|мала/.test(t),'overlap');
+ok(/Эталонное/.test(go(R1,'subtask show')),'show');ok(/Нужно 4/.test(go(R1,'subtask answer 1.1.1.1/1')),'count');
+VS_T=null;ok(/Задачи ещё нет/.test(go(R1,'subtask show')),'no task');
+// exam
+const x=EXNET.find(e=>/VLSM: разметить/.test(e.n));x.start({});const cr=x.crit({});const sc=()=>cr.map(c=>c[2]()?c[1]:0);
+ok(cr.reduce((a,b)=>a+b[1],0)===100,'sum');ok(sc().reduce((a,b)=>a+b)===0,'before 0 ('+sc()+')');
+const r1=byNm('R1'),r2=byNm('R2'),a=byNm('PC-A'),b=byNm('PC-B');
+go(r1,'ip gi0/0 192.168.20.1 /26');go(r1,'ip gi0/1 192.168.20.97 /30');go(r2,'ip gi0/0 192.168.20.98 /30');go(r2,'ip gi0/1 192.168.20.65 /27');
+go(a,'ip eth0 192.168.20.10 /26');go(a,'gateway 192.168.20.1');go(b,'ip eth0 192.168.20.70 /27');go(b,'gateway 192.168.20.65');
+console.log(sc());ok(sc().reduce((s,v)=>s+v)===100,'full 100');
+go(r2,'ip gi0/1 192.168.20.65 /26');ok(sc()[1]===0,'wrong prefix loses points ('+sc()+')');
+go(r2,'ip gi0/1 192.168.20.65 /27');go(r1,'ip gi0/0 192.168.20.1 /25');ok(sc()[0]===0&&sc()[3]===0,'oversized lan overlaps ('+sc()+')');
+ok(MAN.some(m=>/Т71/.test(m[0])),'manual');

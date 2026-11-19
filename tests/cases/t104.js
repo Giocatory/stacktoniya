@@ -1,0 +1,31 @@
+const ok=(c,m)=>console.log((c?'PASS ':'FAIL ')+m);
+const go=(d,c)=>{sel=d.id;const o=out.textContent.length;run(c);return out.textContent.slice(o)};
+CPL=[];tplLoad(TPL.find(x=>/Малый офис/.test(x.n)));
+ok(CPL.length===1&&CPL[0].n==='Начало (авто)','auto checkpoint on template load');
+const R=S.devs.find(d=>d.t==='rt'),P=S.devs.find(d=>d.t==='pc');
+let t=go(R,'checkpoint diff');ok(/Отличий нет/.test(t),'no diff right after load: '+t.trim().split('\n').pop());
+t=go(R,'checkpoint save до правок');ok(/сохранена/.test(t)&&CPL.length===2,'save');
+const oldIp=R.ifaces[0].ip;R.ifaces[0].ip='10.9.9.9';P.gw='10.9.9.1';R.routes.push({net:'172.20.0.0',mask:'255.255.0.0',nh:'10.0.0.2'});R.name='RX';
+const x=S.devs.pop();S.links=S.links.filter(l=>l.a!==x.id&&l.b!==x.id);
+S.devs.push({id:'dNew',t:'pc',k:'pc',name:'PC-NEW',x:10,y:10,ifaces:[{n:'eth0',ip:'',mask:''}],gw:'',routes:[],mac:'00:00:00:00:00:01'});
+ch();t=go(R,'checkpoint diff до правок');console.log(t);
+ok(/IP 192\.168|IP \d+\.\d+\.\d+\.\d+ → 10\.9\.9\.9/.test(t),'iface ip change reported');
+ok(/шлюз .* → 10\.9\.9\.1/.test(t),'gw change');ok(/\+ маршруты: 172\.20\.0\.0\/16 через 10\.0\.0\.2/.test(t),'route added formatted');
+ok(/имя → RX/.test(t),'rename');ok(/\+ добавлено устройство PC-NEW/.test(t),'device added');ok(new RegExp('− удалено устройство '+x.name).test(t),'device removed');
+ok(!/ x:| y:/.test(t),'positions ignored');
+t=go(R,'checkpoint restore до правок');ok(/восстановлена/.test(t),'restore msg');
+ok(S.devs.find(d=>d.t==='rt').ifaces[0].ip===oldIp&&!S.devs.some(d=>d.id==='dNew'),'state restored');
+go(R,'checkpoint diff до правок');t=go(S.devs[0],'checkpoint diff до правок');ok(/Отличий нет/.test(t),'diff empty after restore');
+undo();ok(S.devs.some(d=>d.id==='dNew'),'undo returns edited state');
+// errors/limits
+ok(/Имя точки/.test(go(S.devs[0],'checkpoint save ??')),'bad name');
+ok(/Нет точки/.test(go(S.devs[0],'checkpoint restore nope')),'missing');
+for(let i=0;i<15;i++)go(S.devs[0],'checkpoint save p'+i);ok(CPL.length<=12,'limit 12: '+CPL.length);
+ok(CPL.some(e=>e.n==='Начало (авто)'),'auto point kept when trimming');
+go(S.devs[0],'checkpoint del p14');ok(!CPL.some(e=>e.n==='p14'),'delete');
+// persistence + corrupt
+ok(JSON.parse(localStorage.getItem('netlab_cp_v1')).length===CPL.length,'persisted');
+CPL.push({n:'bad',t:'x',s:'{broken'});ok(/повреждена/.test(cpRestore('bad')),'corrupt point handled');
+CPL.push({n:'junk',t:'x',s:JSON.stringify({devs:[{id:1}],links:[]})});ok(/не прошла/.test(cpRestore('junk')),'invalid scheme rejected, state intact');
+openMd(cpPanel());ok(/Контрольные точки схемы/.test(mb.innerHTML)&&/data-cp="diff"/.test(mb.innerHTML),'panel');
+ok(MAN.some(m=>/Т67/.test(m[0])),'manual');
